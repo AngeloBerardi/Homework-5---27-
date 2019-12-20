@@ -3,7 +3,9 @@ Group #27 composed by Angelo Berardi, Guglielmo Lato, Inar Azimov
 Hello guys, so the work has been splitted in this way:
 
 Angelo Berardi has done GitHub, main.py, function 3 and 4
+
 Guglielmo Lato whole third part, so Visualization 1, 2, 3 and 4
+
 Inar Azimov has done function 1 and 2
 
 The repository has:
