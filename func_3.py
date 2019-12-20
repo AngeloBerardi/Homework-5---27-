@@ -84,8 +84,6 @@ def start(G,h,p):
             return s
     return route
 
-# In[ ]:
-
 
 
 
