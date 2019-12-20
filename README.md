@@ -1,5 +1,6 @@
 # Homework5  #27
 Group #27 composed by Angelo Berardi, Guglielmo Lato, Inar Azimov 
+
 Hello guys, so the work has been splitted in this way:
 
 Angelo Berardi has done GitHub, main.py, function 3 and 4
