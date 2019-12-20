@@ -75,7 +75,6 @@ also we get the Head of the route H and every next steps into the list p
 def start(G,h,p):
     p=[h]+p #collection all the route
     route=[p[0]] #initializatin the route from the starting point
-    print(p)
     for i in range(len(p)-1): #getting all the steps
         if p[i+1] in G and p[i] in G: #if a point is not in G that's not possible to connect all of them
             route+=dijkstra(G, p[i], p[i+1])[1:] #calling the algorithm

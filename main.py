@@ -22,8 +22,8 @@ def main():
         return main()
         
 def inputting():
-    h=list(int(input("Starting point? " ))) #Starting point input
+    h=int(input("Starting point? " )) #Starting point input
     p=list(map(int,input("List of points? " ).split())) #the whole points that you want to check
-    return h+p
+    return [h]+p
 
 main()
