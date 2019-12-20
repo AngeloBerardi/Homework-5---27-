@@ -7,16 +7,21 @@ Guglielmo Lato whole third part, so Visualization 1, 2, 3 and 4
 Inar Azimov has done function 1 and 2
 
 The repository has:
+
 _func_1.py:_ 
->it includes function 1 and visualization 1<
+  >It includes function 1 and visualization 1.
+  
 _func_2.py:_ 
->it includes function 2 and visualization 2<
+  >It includes function 2 and visualization 2.
+  
 _func_3.py:_ 
->it includes function 3 and visualization 3<
+  >it includes function 3 and visualization 3.
+  
 _func_4.py:_ 
->it includes function 4 and visualization 4<
+  >It includes function 4 and visualization 4.
+  
 _main.py:_ 
->that execute the whole homework asking you the function that you want to use, the starting point and also the list of points
+>That execute the whole homework asking you the function that you want to use, the starting point and also the list of points.
 
 We hope that you will find interesting how we have done the homework!
 
