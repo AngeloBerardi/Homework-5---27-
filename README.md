@@ -21,7 +21,7 @@ _func_4.py:_
   >It includes function 4 and visualization 4.
   
 _main.py:_ 
->That execute the whole homework asking you the function that you want to use, the starting point and also the list of points.
+>That executes the whole homework, asking you the function that you want to use, the starting point and also the list of points.
 
 We hope that you will find interesting how we have done the homework!
 
