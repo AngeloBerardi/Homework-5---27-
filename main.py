@@ -1,7 +1,8 @@
 import func_1
-import func_2
+#import func_2
 import func_3
 import func_4
+import folium
 '''
 Our main function, it will ask you to tell us which function you want to use and the input
 '''
@@ -15,10 +16,10 @@ def main():
         print(func_2.start(func_2.get_smatest_neighbours(l[0],l[1:len(l)])))
     elif c=="3":
         l=inputting()
-        print(func_3.start(func_3.creategraph(),l[0],l[1:len(l)]))
+        return func_3.visualization(l,func_3.start(func_3.creategraph(),l[0],l[1:len(l)]))
     elif c=="4":
         l=inputting()
-        print(func_4.start(func_4.creategraph(),l[0],l[1:len(l)]))
+        return func_4.visualization(l,func_4.start(func_3.creategraph(),l[0],l[1:len(l)]))
     else:
         print("Please follow the rules!")
         return main()
