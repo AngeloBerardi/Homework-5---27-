@@ -10,14 +10,15 @@
 # undirected and weighted graph 
   
 from collections import defaultdict 
-
+import folium           #used for map visualization
+import networkx as nx	#used for map visualization
+import io
 
 '''
 Kruskal's algorithm is a greedy algorithm that finds a minimum spanning tree for a weighted undirected garph.
 The algorithm operates by adding the egdes one by one in the order of their increasing lengths, so as to form a tree. 
 Egdes are rejected if it's addition to the tree, forms a cycle. 
 This continues till we have V-1 egdes in the tree. (V stands for the number of vertices).
-
 '''
 
   
@@ -213,5 +214,71 @@ get_smatest_neighbours([3, 4], distance_graph)
 # In[ ]:
 
 
+def visualization(node_in,nodes_out,weight):
 
+    #extracting coordinates
+    lines = open("USA-road-d.CAL.co", "r").read().splitlines()
+    node = []
+    for i in lines:    
+        node.append(i.split())
+    x=[[el[1],(int(el[2])*10**-6,int(el[3])*10**-6)] for el in node if el[0]=='v'] #extracting node and coordinates
+    y=[el[1] for el in x]  #coordinates
+    y=[(a,b) for b,a in y]
 
+    #bulding dict {node: coordinate(x,y)}
+    coord={}
+    for i in range(len(x)):
+        coord[i+1] = y[i]
+
+    #extracting edges
+    lines = open("USA-road-d.CAL.gr", "r").read().splitlines()
+    edges = []
+    for i in lines:    
+        edges.append(i.split())
+    d_edges=[(int(el[1]),int(el[2])) for el in edges if el[0]=='a']
+
+    #build the nx graph
+    G=nx.Graph()   
+    G.add_nodes_from([int(el[1]) for el in node if el[0]=='v'])
+    G.add_edges_from(d_edges)
+    
+    #building coordinates for plotting the routes
+    appo =[]
+    for i in [node_in]+nodes_out:
+        for j in list(G.edges(i)):
+            if j[1] in [node_in]+nodes_out:
+                appo.append(j)
+    coord_edges = [(coord[i],coord[j]) for i,j in appo]
+    
+    #building coordinates for plotting nodes
+    in_coord = coord[node_in[0]]
+    out_coord =[]
+    for i in nodes_out:
+        out_coord.append(coord[i])
+        
+    m=folium.Map(in_coord,zoom_start=16)
+
+    #plot nearest nodes marker 
+    for i in range(len(out_coord)):
+        folium.Marker(location=out_coord[i], popup=nodes_out[i],radius=2, icon=folium.Icon(icon='glyphicon glyphicon-ok-sign',color='red')).add_to(m)
+
+    #plot input node marker
+    folium.Marker(location=in_coord, popup=node_in,radius=2, icon=folium.Icon(icon='glyphicon glyphicon-arrow-down',color='green')).add_to(m)
+
+    #plot route
+    if weight == 1:
+        color = 'blue'
+    elif weight == 2:
+        color = 'yellow'
+    else:
+        color= 'green'
+    folium.PolyLine(locations=coord_edges,color=color, weight=5, opacity=10).add_to(m)    
+
+    #selectable layers
+    folium.TileLayer('openstreetmap').add_to(m)
+    folium.TileLayer('cartodbdark_matter').add_to(m)
+    folium.TileLayer('stamenwatercolor').add_to(m)
+    folium.TileLayer('stamentoner').add_to(m)
+    folium.LayerControl().add_to(m)
+    
+    return m
