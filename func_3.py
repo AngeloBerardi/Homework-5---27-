@@ -1,6 +1,6 @@
 import networkx as nx   #used to create the graph
 import numpy as np      #useful to be faster
-
+import folium           #used for map visualization
 '''
 dist function, taking the file path and a temporary variable, so we open the file and split every line into a list
 then if the list starts with an "a" we have a connection, so we add them into a list with (point1, point2, weight of the connection
@@ -27,7 +27,7 @@ def creategraph():
     if s=="1":
         G.add_weighted_edges_from(dist("USA-road-d.CAL.gr",True))
     elif s=="2":
-        G.add_weighted_edges_from(dist("USA-road-d.CAL.gr",True))
+        G.add_weighted_edges_from(dist("USA-road-t.CAL.gr",True))
     elif s=="3":
         G.add_weighted_edges_from(dist("USA-road-d.CAL.gr",False))
     else:
@@ -83,6 +83,47 @@ def start(G,h,p):
             return s
     return route
 
+#print(start(creategraph(),1,[451,1799]))
 
 
 
+
+
+def visualization(init,route):
+    lines = open("USA-road-d.CAL.co", "r").read().splitlines() #importing coordinates
+    node = []
+    for i in lines:    
+        node.append(i.split())
+    x=[[el[1],(int(el[2])*10**-6,int(el[3])*10**-6)] for el in node if el[0]=='v'] #extracting node and coordinates(calculated)
+    y=[el[1] for el in x]  #coordinates    
+    coord={} #bulding dict {node: coordinate(x,y)}
+    for i in range(len(x)):
+        coord[i+1] = y[i]    
+    nodes_coord = [coord[i] for i in route]
+    nodes_coord_inv = [(b,a) for a,b in nodes_coord]
+
+    #visualization part
+    #creating a Folium map object centered on the starting point
+    m=folium.Map(nodes_coord_inv[0],zoom_start=15)
+    
+    # plotting edge(routes between nodes)
+    folium.PolyLine(locations=nodes_coord_inv,color="orange", weight=5, opacity=10).add_to(m)
+
+    #plotting(marker)
+    for i in range(len(route)):
+        if route[i] in init[1:-1]: 
+            folium.Marker(location=nodes_coord_inv[i], popup=route[i], icon=folium.Icon(icon='glyphicon glyphicon-arrow-down')).add_to(m)
+        elif i == 0:
+            folium.Marker(location=nodes_coord_inv[i], popup=route[i], icon=folium.Icon(icon='glyphicon glyphicon-play')).add_to(m)
+        elif i == len(route)-1:
+            folium.Marker(location=nodes_coord_inv[i], popup=route[i], icon=folium.Icon(icon='glyphicon glyphicon-flag')).add_to(m)
+        else:
+            folium.CircleMarker(location=nodes_coord_inv[i], popup=route[i], color= 'red', number_of_sides=0 ,radius=3).add_to(m)
+
+    #selectable layers
+    folium.TileLayer('openstreetmap').add_to(m)
+    folium.TileLayer('cartodbdark_matter').add_to(m)
+    folium.TileLayer('stamenwatercolor').add_to(m)
+    folium.TileLayer('stamentoner').add_to(m)
+    folium.LayerControl().add_to(m)
+    return m
